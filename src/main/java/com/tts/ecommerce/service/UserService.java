@@ -16,11 +16,13 @@ import com.tts.ecommerce.repository.UserRepository;
 
 @Service
 public class UserService implements UserDetailsService {
-   
-	@Autowired
+
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+//    private Logger logger = LoggerFactory.getLogger(UserService.class);
+
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -48,7 +50,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findByUsername(username);
-        if(user == null) throw new UsernameNotFoundException("Username not found.");
+        if (user == null) throw new UsernameNotFoundException("Username not found.");
         return user;
     }
 }

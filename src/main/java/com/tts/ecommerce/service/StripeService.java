@@ -3,6 +3,7 @@ package com.tts.ecommerce.service;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -10,11 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.stripe.Stripe;
-import com.stripe.exception.ApiConnectionException;
-import com.stripe.exception.ApiException;
-import com.stripe.exception.AuthenticationException;
-import com.stripe.exception.CardException;
-import com.stripe.exception.InvalidRequestException;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 import com.tts.ecommerce.model.ChargeRequest;
@@ -22,7 +18,7 @@ import com.tts.ecommerce.model.ChargeRequest;
 @Service
 public class StripeService {
 
-    @Value("${STRIPE_SECRET_KEY}")
+    @Value("${STRIPE_PRIVATE_KEY}")
     private String secretKey;
 
     @PostConstruct

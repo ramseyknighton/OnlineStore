@@ -15,7 +15,8 @@ import com.tts.ecommerce.model.User;
 import com.tts.ecommerce.service.UserService;
 
 @Controller
-class AuthenticationController {
+public class AuthenticationController {
+
     @Autowired
     private UserService userService;
 
@@ -24,9 +25,10 @@ class AuthenticationController {
         return "signin";
     }
 
+
     @PostMapping("/signin")
-    public String singup(@Valid User user, @RequestParam String submit, BindingResult bindingResult,
-            HttpServletRequest request) throws ServletException {
+    public String signup(@Valid User user, @RequestParam String submit, BindingResult bindingResult,
+                         HttpServletRequest request) throws ServletException {
         String password = user.getPassword();
         if (submit.equals("up")) {
             if (userService.findByUsername(user.getUsername()) == null) {
@@ -36,6 +38,7 @@ class AuthenticationController {
                 return "signin";
             }
         }
+
         request.login(user.getUsername(), password);
         System.out.println(user);
         return "redirect:/";
