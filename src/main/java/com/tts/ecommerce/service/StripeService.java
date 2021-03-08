@@ -1,5 +1,7 @@
 package com.tts.ecommerce.service;
 
+
+
 import java.util.HashMap;
 
 import javax.annotation.PostConstruct;
@@ -20,15 +22,15 @@ import com.tts.ecommerce.model.ChargeRequest;
 @Service
 public class StripeService {
 
-	@Value("${STRIPE_PUBLIC_KEY}")
-	private String secretKey;
+    @Value("${STRIPE_SECRET_KEY}")
+    private String secretKey;
 
-	@PostConstruct
-	public void init() {
-		Stripe.apiKey = secretKey;
-	}
+    @PostConstruct
+    public void init() {
+        Stripe.apiKey = secretKey;
+    }
 
-	public Charge charge(ChargeRequest chargeRequest) throws StripeException {
+    public Charge charge(ChargeRequest chargeRequest) throws StripeException {
         Map<String, Object> chargeParams = new HashMap<>();
         chargeParams.put("amount", chargeRequest.getAmount());
         chargeParams.put("currency", chargeRequest.getCurrency());
@@ -36,5 +38,6 @@ public class StripeService {
         chargeParams.put("source", chargeRequest.getStripeToken());
         return Charge.create(chargeParams);
     }
+
 }
 

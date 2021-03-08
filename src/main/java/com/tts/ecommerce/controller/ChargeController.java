@@ -1,7 +1,5 @@
 package com.tts.ecommerce.controller;
 
-import java.util.Currency;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,31 +17,27 @@ import com.tts.ecommerce.service.StripeService;
 @Controller
 public class ChargeController {
 
-	@Autowired
-	private StripeService paymentsService;
+    @Autowired
+    private StripeService paymentsService;
 
-	@PostMapping("/charge")
+    @PostMapping("/charge")
+    public String charge(ChargeRequest chargeRequest, Model model) throws StripeException {
+        chargeRequest.setDescription("Example charge");
+        chargeRequest.setCurrency(ChargeRequest.Currency.EUR);
 
-	//accesstype returntype methodname (ARGUMENTS) {}
-	public String charge(ChargeRequest chargeRequest, Model model) throws StripeException {
-		//Interacting with instance of chargeRequest
-		chargeRequest.setDescription("Example charge");
-		chargeRequest.setCurrency(Currency.EUR);
+        Charge charge = paymentsService.charge(chargeRequest);
 
-		//Adding variable called "charge" the type of Charge
-		Charge charge = paymentsService.charge(chargeRequest); //Template of a charge is put into variable named charge
-		
-		model.addAttribute("id", charge.getId());
-		model.addAttribute("status", charge.getStatus());
-		model.addAttribute("chargeId", charge.getId());
-		model.addAttribute("balance_transaction", charge.getBalanceTransaction());
-		return "result";
+        model.addAttribute("id", charge.getId());
+        model.addAttribute("status", charge.getStatus());
+        model.addAttribute("chargeId", charge.getId());
+        model.addAttribute("balance_transaction", charge.getBalanceTransaction());
+        return "result";
 
-	}
+    }
 
-	@ExceptionHandler(StripeException.class)
-	public String handleError(Model model, StripeException ex) {
-		model.addAttribute("error", ex.getMessage());
-		return "result";
-	}
+    @ExceptionHandler(StripeException.class)
+    public String handleError(Model model, StripeException ex) {
+        model.addAttribute("error", ex.getMessage());
+        return "result";
+    }
 }
